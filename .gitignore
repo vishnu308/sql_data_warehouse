@@ -205,3 +205,55 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# =============================================================================
+# Oracle Database & Data Warehouse Specific
+# =============================================================================
+
+# Oracle log files
+*.log
+*.bad
+*.dmp
+*.trc
+*.trm
+
+# Oracle export/import files
+*.dmp
+*.dat
+
+# Configuration files with sensitive data
+config/*_prod.sql
+config/*_production.sql
+config/passwords.txt
+config/credentials.sql
+.env.production
+.env.prod
+
+# Backup files
+backup/
+*.bak
+*.backup
+*_backup.sql
+
+# Temporary data files
+temp/
+tmp/
+*.tmp
+
+# Large data files (keep sample data only)
+Dataset/*.csv
+!Dataset/superstore.csv
+
+# ETL error files
+*.bad
+*.log
+STAGING_*.log
+STAGING_*.bad
+
+# Performance and monitoring outputs
+monitoring/output/
+performance_reports/
+
+# Test data
+test_data/
+*_test.csv
