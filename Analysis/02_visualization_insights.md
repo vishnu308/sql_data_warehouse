@@ -174,4 +174,3 @@ Every year shows:
 
 ---
 
-**Next Steps**: Would you like to create more advanced visualizations or move to the next analysis (Customer Analysis)?

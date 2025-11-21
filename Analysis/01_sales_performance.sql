@@ -98,8 +98,3 @@ on f.customer_key = c.customer_key
 -- =============================================================================
 -- INSIGHTS TEMPLATE
 -- =============================================================================
--- After running these queries, answer:
--- 1. What is our total revenue and profit?
--- 2. Which category generates the most revenue?
--- 3. Which region is most profitable?
--- 4. Which customer segment should we focus on?
