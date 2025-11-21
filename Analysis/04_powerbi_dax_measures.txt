@@ -1,0 +1,150 @@
+// =============================================================================
+// Power BI DAX Measures - Copy & Paste
+// =============================================================================
+// Create these measures in Power BI Desktop
+// Click on FACT_SALES table → New Measure → Paste code
+
+// =============================================================================
+// BASIC MEASURES
+// =============================================================================
+
+Total Sales = SUM(FACT_SALES[sales])
+
+Total Profit = SUM(FACT_SALES[profit])
+
+Profit Margin % = 
+DIVIDE(
+    [Total Profit],
+    [Total Sales],
+    0
+) * 100
+
+Total Transactions = COUNTROWS(FACT_SALES)
+
+Avg Transaction = 
+DIVIDE(
+    [Total Sales],
+    [Total Transactions],
+    0
+)
+
+Total Quantity = SUM(FACT_SALES[quantity])
+
+Customer Count = DISTINCTCOUNT(FACT_SALES[customer_key])
+
+Sales Per Customer = 
+DIVIDE(
+    [Total Sales],
+    [Customer Count],
+    0
+)
+
+// =============================================================================
+// TIME INTELLIGENCE MEASURES
+// =============================================================================
+
+YoY Sales Growth % = 
+VAR CurrentYearSales = [Total Sales]
+VAR PreviousYearSales = 
+    CALCULATE(
+        [Total Sales],
+        DATEADD(DIM_TIME[full_date], -1, YEAR)
+    )
+RETURN
+    DIVIDE(
+        CurrentYearSales - PreviousYearSales,
+        PreviousYearSales,
+        0
+    ) * 100
+
+MoM Sales Growth % = 
+VAR CurrentMonthSales = [Total Sales]
+VAR PreviousMonthSales = 
+    CALCULATE(
+        [Total Sales],
+        DATEADD(DIM_TIME[full_date], -1, MONTH)
+    )
+RETURN
+    DIVIDE(
+        CurrentMonthSales - PreviousMonthSales,
+        PreviousMonthSales,
+        0
+    ) * 100
+
+YTD Sales = 
+TOTALYTD(
+    [Total Sales],
+    DIM_TIME[full_date]
+)
+
+Previous Year Sales = 
+CALCULATE(
+    [Total Sales],
+    DATEADD(DIM_TIME[full_date], -1, YEAR)
+)
+
+// =============================================================================
+// ADVANCED MEASURES
+// =============================================================================
+
+Avg Profit Per Transaction = 
+DIVIDE(
+    [Total Profit],
+    [Total Transactions],
+    0
+)
+
+Discount Rate % = 
+DIVIDE(
+    SUM(FACT_SALES[discount]),
+    [Total Transactions],
+    0
+) * 100
+
+Total Shipping Cost = SUM(FACT_SALES[shipping_cost])
+
+Shipping Cost % = 
+DIVIDE(
+    [Total Shipping Cost],
+    [Total Sales],
+    0
+) * 100
+
+// =============================================================================
+// RANKING MEASURES
+// =============================================================================
+
+Product Rank by Sales = 
+RANKX(
+    ALL(DIM_PRODUCT[product_name]),
+    [Total Sales],
+    ,
+    DESC,
+    DENSE
+)
+
+Customer Rank by Sales = 
+RANKX(
+    ALL(DIM_CUSTOMER[customer_name]),
+    [Total Sales],
+    ,
+    DESC,
+    DENSE
+)
+
+// =============================================================================
+// CONDITIONAL FORMATTING MEASURES
+// =============================================================================
+
+Profit Margin Color = 
+SWITCH(
+    TRUE(),
+    [Profit Margin %] >= 15, "High",
+    [Profit Margin %] >= 10, "Medium",
+    "Low"
+)
+
+Sales Performance = 
+VAR AvgSales = CALCULATE([Total Sales], ALL(DIM_PRODUCT[category]))
+RETURN
+    IF([Total Sales] > AvgSales, "Above Average", "Below Average")
